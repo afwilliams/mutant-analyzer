@@ -8,20 +8,45 @@ export class MutantCoreService {
   async isMutant(dna: Array<string>): Promise<boolean> {
     DnaUtil.check(dna);
     let countMatches = 0;
+    const obliques = [];
+    const obliquesNegative = [];
     for (let row = 0; row < dna.length; row++) {
-      // countMatches += this.checkHorizontalMatches(dna[row]);
-      // countMatches += this.checkVerticalMatches(dna, row);
-      this.logger.log(`row ${row}`);
-      this.checkObliqueMatches(dna, row);
+      countMatches += this.checkHorizontalMatches(dna[row]);
+      countMatches += this.checkVerticalMatches(dna, row);
+      obliques.push(await this.getObliqueItems(dna, row));
+      obliquesNegative.push(await this.getObliqueItemsNegative(dna, row));
     }
 
-    this.logger.log(`Total Matches ${countMatches}`);
+    // for some unknown reason it always takes the coincidence that was analyzed before, that's why I delete it
+    obliquesNegative.shift();
 
-    return true;
+    countMatches += this.checkObliqueMatches(obliques);
+    countMatches += this.checkObliqueMatches(obliquesNegative);
+    this.logger.log(`Total Matches ${countMatches}`);
+    return countMatches > 0;
   }
 
   private checkHorizontalMatches(row: string): number {
     return this.findMatches(row);
+  }
+
+
+  async getObliqueItems(dna: Array<string>, sequence = 0) {
+    const item = [];
+    for (let row = 0; row < dna.length; row++) {
+      const columnsSort = this.getColumns(dna)[row];
+      item.push(columnsSort[row + sequence]);
+    }
+    return item;
+  }
+
+  async getObliqueItemsNegative(dna: Array<string>, sequence = 0) {
+    const item = [];
+    for (let row = 0; row < dna.length; row++) {
+      const columnsSort = this.getColumns(dna)[row];
+      item.push(columnsSort[row - sequence]);
+    }
+    return item;
   }
 
   private checkVerticalMatches(dna: Array<string>, row: number): number {
@@ -32,29 +57,25 @@ export class MutantCoreService {
     return this.findMatches(columnWord);
   }
 
-  private checkObliqueMatches(dna: Array<string>, row: number) {
-    let columnWord = '';
-    let indexCell = 0;
-
-    for (let r = 0; r < dna.length; r++) {
-      for (let columnIndex = 0; columnIndex < dna[r].length; columnIndex++) {
-        columnWord += dna[columnIndex][row];
-      }
-      this.logger.log(`columnWord ${columnWord}`);
-
+  private checkObliqueMatches(obliqueWords) {
+    let counMatches = 0;
+    for (let wordIndex = 0; wordIndex < obliqueWords.length; wordIndex++) {
+      counMatches += this.findMatches(obliqueWords[wordIndex].join(''));
     }
+    return counMatches;
+  }
 
-    // for (let cellIndex = 0; cellIndex < dna[row].length; cellIndex++) {
-    //
-    //   this.logger.log(`row ${row}`);
-    //   this.logger.log(`dna[cellIndex] ${dna[cellIndex]}`);
-    //   cellWord += dna[cellIndex][row];
-    //   for (let index = 0; index < 6; index++) {
-    //     // this.logger.log(`index ${index}`);
-    //     // this.logger.log(`index ${dna[cellIndex][index]}`);
-    //   }
-    //   //this.logger.log(`cellWord ${cellWord}`);
-    // }
+  private getColumns(dna: Array<string>): Array<Array<string>> {
+    const columnsSort = [];
+
+    for (let row = 0; row < dna.length; row++) {
+      const columnWord = [];
+      for (let columnIndex = 0; columnIndex < dna[row].length; columnIndex++) {
+        columnWord.push(dna[columnIndex][row]);
+      }
+      columnsSort.push(columnWord);
+    }
+    return columnsSort;
   }
 
   private findMatches(word: string): number {

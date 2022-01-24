@@ -72,6 +72,10 @@
       "<rootDir>/apps/",
       "<rootDir>/libs/"
     ],
+    "modulePaths": [
+      "<rootDir>",
+      "<rootDir>/libs/mutant-core/src/$1"
+    ],
     "moduleNameMapper": {
       "^mutant/mutant-core(|/.*)$": "<rootDir>/libs/mutant-core/src/$1"
     }
