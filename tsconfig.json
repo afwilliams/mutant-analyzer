@@ -11,6 +11,14 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@mutant/mutant-core": [
+        "libs/mutant-core/src"
+      ],
+      "@mutant/mutant-core/*": [
+        "libs/mutant-core/src/*"
+      ]
+    }
   }
 }

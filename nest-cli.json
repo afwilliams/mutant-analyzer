@@ -1,4 +1,30 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "apps/mutant-analyzer/src",
+  "monorepo": true,
+  "root": "apps/mutant-analyzer",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/mutant-analyzer/tsconfig.app.json"
+  },
+  "projects": {
+    "mutant-analyzer": {
+      "type": "application",
+      "root": "apps/mutant-analyzer",
+      "entryFile": "main",
+      "sourceRoot": "apps/mutant-analyzer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/mutant-analyzer/tsconfig.app.json"
+      }
+    },
+    "mutant-core": {
+      "type": "library",
+      "root": "libs/mutant-core",
+      "entryFile": "index",
+      "sourceRoot": "libs/mutant-core/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/mutant-core/tsconfig.lib.json"
+      }
+    }
+  }
 }
