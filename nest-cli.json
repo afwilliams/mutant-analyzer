@@ -25,6 +25,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/mutant-core/tsconfig.lib.json"
       }
+    },
+    "mutant-database": {
+      "type": "library",
+      "root": "libs/mutant-database",
+      "entryFile": "index",
+      "sourceRoot": "libs/mutant-database/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/mutant-database/tsconfig.lib.json"
+      }
+    },
+    "mutant-entities": {
+      "type": "library",
+      "root": "libs/mutant-entities",
+      "entryFile": "index",
+      "sourceRoot": "libs/mutant-entities/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/mutant-entities/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -14,7 +14,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "test": "jest --runInBand --detectOpenHandles",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -22,20 +22,26 @@
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^1.1.7",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/mongoose": "^9.0.2",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.1.5",
+    "cache-manager": "^3.6.0",
+    "mongoose": "^6.2.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.18",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
+    "@types/cache-manager": "^3.4.2",
     "@types/express": "^4.17.13",
-    "@types/jest": "^26.0.24",
+    "@types/jest": "27.0.2",
     "@types/node": "^16.0.0",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
@@ -43,7 +49,8 @@
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "jest": "27.0.6",
+    "jest": "^27.2.5",
+    "mongodb-memory-server": "^8.0.2",
     "prettier": "^2.3.2",
     "supertest": "^6.1.3",
     "ts-jest": "^27.0.3",
@@ -57,6 +64,13 @@
       "js",
       "json",
       "ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      ".module.ts",
+      "<rootDir>/apps/mutant-analyzer/src/main.ts",
+      ".e2e-spec.ts",
+      ".mock.ts"
     ],
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
@@ -77,7 +91,9 @@
       "<rootDir>/libs/mutant-core/src/$1"
     ],
     "moduleNameMapper": {
-      "^mutant/mutant-core(|/.*)$": "<rootDir>/libs/mutant-core/src/$1"
+      "^@mutant/mutant-core(|/.*)$": "<rootDir>/libs/mutant-core/src/$1",
+      "^@mutant/mutant-database(|/.*)$": "<rootDir>/libs/mutant-database/src/$1",
+      "^@mutant/mutant-entities(|/.*)$": "<rootDir>/libs/mutant-entities/src/$1"
     }
   }
 }

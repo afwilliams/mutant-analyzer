@@ -18,6 +18,18 @@
       ],
       "@mutant/mutant-core/*": [
         "libs/mutant-core/src/*"
+      ],
+      "@mutant/mutant-database": [
+        "libs/mutant-database/src"
+      ],
+      "@mutant/mutant-database/*": [
+        "libs/mutant-database/src/*"
+      ],
+      "@mutant/mutant-entities": [
+        "libs/mutant-entities/src"
+      ],
+      "@mutant/mutant-entities/*": [
+        "libs/mutant-entities/src/*"
       ]
     }
   }

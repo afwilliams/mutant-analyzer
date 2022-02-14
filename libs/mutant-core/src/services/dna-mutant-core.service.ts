@@ -1,9 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { DnaUtil } from './dna.util';
+
+import { DnaUtil } from '@mutant/mutant-core/utils/dna.util';
+import { DnaService } from '@mutant/mutant-database';
 
 @Injectable()
-export class MutantCoreService {
-  private logger = new Logger(MutantCoreService.name);
+export class DnaMutantCoreService {
+  private logger = new Logger(DnaMutantCoreService.name);
+
+  constructor(private dnaService: DnaService) {}
 
   async isMutant(dna: Array<string>): Promise<boolean> {
     DnaUtil.check(dna);
@@ -23,13 +27,14 @@ export class MutantCoreService {
     countMatches += this.checkObliqueMatches(obliques);
     countMatches += this.checkObliqueMatches(obliquesNegative);
     this.logger.log(`Total Matches ${countMatches}`);
-    return countMatches > 0;
+    const isMutant = countMatches > 0;
+    this.dnaService.save(dna?.toString(), isMutant);
+    return isMutant;
   }
 
   private checkHorizontalMatches(row: string): number {
     return this.findMatches(row);
   }
-
 
   async getObliqueItems(dna: Array<string>, sequence = 0) {
     const item = [];
@@ -85,9 +90,7 @@ export class MutantCoreService {
     for (let i = 0; i < word.length; i++) {
       if ((i + 1) % 2) {
         if (previous !== i && word[previous] === word[i]) {
-          potentialMatchesIndex = Array.from(
-            word.substring(previous === 0 ? previous : previous - 1, i + 2),
-          );
+          potentialMatchesIndex = Array.from(word.substring(previous === 0 ? previous : previous - 1, i + 2));
           this.logger.log(`potential matches ${potentialMatchesIndex}`);
           countWordMatches = potentialMatchesIndex.filter((w) => w === word[i]);
         }

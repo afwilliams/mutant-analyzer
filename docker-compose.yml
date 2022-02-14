@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:3.4.6
+    volumes:
+      - ./data/mongo:/data/db:delegated
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    ports:
+      - 27017:27017

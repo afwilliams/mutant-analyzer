@@ -1,4 +1,4 @@
-import { DnaNotValid } from './dna-not-valid';
+import { DnaNotValid } from '../exceptions/dna-not-valid';
 import { Logger } from '@nestjs/common';
 
 export class DnaUtil {

@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
-import { MutantCoreService } from './mutant-core.service';
+
+import { MutantDatabaseModule } from '@mutant/mutant-database';
+import { DnaMutantCoreService, StatsMutantCoreService } from '@mutant/mutant-core/services';
 
 @Module({
-  providers: [MutantCoreService],
-  exports: [MutantCoreService],
+  imports: [MutantDatabaseModule],
+  providers: [DnaMutantCoreService, StatsMutantCoreService],
+  exports: [MutantDatabaseModule, DnaMutantCoreService, StatsMutantCoreService],
 })
 export class MutantCoreModule {}
